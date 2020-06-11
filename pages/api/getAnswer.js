@@ -11,13 +11,7 @@ const answerSheet = {
   9: 3,
   10: 2
 }
-
 export default function handler(req, res) {
   const { answerIndex, questionIndex } = req.query
-  if(answerSheet[questionIndex] == answerIndex) {
-    res.status(200).json(true)
-  } else {
-    res.status(200).json(false)
-  }
-  
+  res.status(200).json(answerSheet[questionIndex]) 
 }

@@ -3,6 +3,7 @@ import useSWR from 'swr'
 import {useState} from 'react'
 import { Share } from 'react-twitter-widgets'
 import Layout from '../components/layout';
+import cn from 'classnames';
 
 export default function Home() {
 
@@ -12,10 +13,12 @@ export default function Home() {
   const [index, setIndex] = useState(0);
   const [counter, setCounter] = useState(30);
   const [endMessage, setEndMessage] = useState('');
-  let timer = null;
+  const [score, setScore] = useState(0);
+  let timerClass = cn('bar striped success ', `w-${Math.floor(((counter)/30)*100)}`); 
+  let timer;
 
   React.useEffect(() => {
-    if (start && counter > 0) {
+    if (start && counter > 0 && index < data.length) {
       timer = setTimeout(() => {
         setCounter(counter - 1)
       }, 1000);
@@ -24,9 +27,10 @@ export default function Home() {
 
   const handleClick = async function (e,answerIndex, questionIndex) {
     e.persist()
-    const res = await fetch(`api/checkAnswer?answerIndex=${answerIndex}&questionIndex=${questionIndex}`)
-    const mark = await res.json()
-    if(mark == true) {
+    const res = await fetch(`api/getAnswer?answerIndex=${answerIndex}&questionIndex=${questionIndex}`)
+    const answer = await res.json()
+    if(answer == answerIndex) {
+      setScore(score => score + 1)
       e.target.style.background = "green";
       e.target.style.color = "white";
     } else {
@@ -42,6 +46,7 @@ export default function Home() {
 
   const playAgain = function() {
     clearTimeout(timer);
+    setScore(0)
     setCounter(30);
     setIndex(0);
   }
@@ -53,7 +58,11 @@ export default function Home() {
     if (index < data.length && counter > 0) {
       return (
         <Layout>
-          {counter}
+          <div className="row">
+            <div className="progress margin-bottom">
+              <div className={timerClass}></div>
+            </div>
+          </div>
           <div className="row flex-center">
               <img src={data[index].img} className="no-border"/>
           </div>
@@ -90,8 +99,9 @@ export default function Home() {
       return (
         <Layout>
           <div className="row flex-center">
+            <h1>Score: {score}/{data.length}</h1>
             <p className="col-12 col">Share on Twitter?</p>
-            <Share url="https://guess-that-logo.now.sh/" options={{ text: "I just completed Guess That Frontend Logo! Play now to test Frontend Trivia knowledge!", size: "large" }} />
+            <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.length} in Guess That Frontend Logo with ${counter} seconds remaining! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
             <button className="btn-block" onClick={() => playAgain()}>Play Again!</button>
           </div>
           <style jsx>{`
