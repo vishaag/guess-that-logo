@@ -12,10 +12,11 @@ export default function Home() {
   const [index, setIndex] = useState(0);
   const [counter, setCounter] = useState(30);
   const [endMessage, setEndMessage] = useState('');
+  let timer = null;
 
   React.useEffect(() => {
-    if (counter > 0) {
-      setTimeout(() => {
+    if (start && counter > 0) {
+      timer = setTimeout(() => {
         setCounter(counter - 1)
       }, 1000);
     }
@@ -40,8 +41,9 @@ export default function Home() {
   };
 
   const playAgain = function() {
-    setIndex(0);
+    clearTimeout(timer);
     setCounter(30);
+    setIndex(0);
   }
 
   if (error) return <div>failed to load</div>
