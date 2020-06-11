@@ -6,6 +6,10 @@ export default function Layout({ children }) {
       <Head>
         <title>Guess That Frontend Logo</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="twitter:card" content="summary"/>
+        <meta name="twitter:title" content="Guess that frontend logo!"/>
+        <meta name="twitter:description" content="Do you think you can guess all the logos within 30 seconds?"/>
+        <meta name="twitter:image" content="/twitter-card.png"/>
       </Head>
 
       <header>
