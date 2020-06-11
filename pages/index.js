@@ -109,7 +109,12 @@ export default function Home() {
           <div className="row flex-center">
             <h2 className="padding-small margin-small">Score: {score}/{data.length}</h2>
             <p className="col-12 col padding-small">Share on Twitter?</p>
-            <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.length} in Guess That Frontend Logo with ${counter} seconds remaining! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
+            {counter > 0 &&
+              <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.length} in Guess That Frontend Logo with ${counter} seconds remaining! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
+            }
+            {counter == 0 &&
+              <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.length} in Guess That Frontend Logo! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
+            }
             <button className="btn-block" onClick={() => playAgain()}>Play Again!</button>
           </div>
           <style jsx>{`
