@@ -89,7 +89,7 @@ export default function Home() {
         <Layout>
           <div className="row flex-center">
             <p className="col-12 col">Share on Twitter?</p>
-            <Share url="https://andrewsuzuki.com" options={{ text: "I just completed Guess That Frontend Logo! Play now to test Frontend Trivia knowledge!", size: "large" }} />
+            <Share url="https://guess-that-logo.now.sh/" options={{ text: "I just completed Guess That Frontend Logo! Play now to test Frontend Trivia knowledge!", size: "large" }} />
             <button className="btn-block" onClick={() => playAgain()}>Play Again!</button>
           </div>
           <style jsx>{`
