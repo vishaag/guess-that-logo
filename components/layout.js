@@ -9,14 +9,15 @@ export default function Layout({ children }) {
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
-          value="Do you think you can guess all the logos within 30 seconds?"
+          content="Do you think you can guess all the logos within 30 seconds?"
         />
         <meta
           property="og:image"
-          value="https://raw.githubusercontent.com/vishaag/guess-that-logo/master/public/twitter-card.png"
+          content="https://raw.githubusercontent.com/vishaag/guess-that-logo/master/public/twitter-card.png"
         />
-        <meta name="og:title" value="Guess That Frontend Logo" />
-        <meta name="twitter:card" value="summary_large_image" />
+        <meta name="twitter:image" content="https://raw.githubusercontent.com/vishaag/guess-that-logo/master/public/twitter-card.png"></meta>
+        <meta name="og:title" content="Guess That Frontend Logo" />
+        <meta name="twitter:card" content="summary_large_image" />
 
       </Head>
 
