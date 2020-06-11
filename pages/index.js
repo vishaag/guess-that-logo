@@ -107,14 +107,15 @@ export default function Home() {
       return (
         <Layout>
           <div className="row flex-center">
-            <h2>Score: {score}/{data.length}</h2>
-            <p className="col-12 col">Share on Twitter?</p>
+            <h2 className="padding-small margin-small">Score: {score}/{data.length}</h2>
+            <p className="col-12 col padding-small">Share on Twitter?</p>
             <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.length} in Guess That Frontend Logo with ${counter} seconds remaining! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
             <button className="btn-block" onClick={() => playAgain()}>Play Again!</button>
           </div>
           <style jsx>{`
             p {
               text-align: center;
+              font-size: 1.5em;
             }
 
             button {
@@ -128,12 +129,17 @@ export default function Home() {
     return(
       <Layout>
         <div className="row flex-center">
+          <img src="/frontLogo.svg" className="no-border"></img>
           <p className="col-12 col"> Do you think you can guess all the frontend logos?</p>
           <button className="btn-block" onClick={() => setStart(true)}>Start Game</button>
         </div>
         <style jsx>{`
+        img {
+          height: 250px;
+        }
           p {
             text-align: center;
+            font-size: 1.5em;
           }
         `}</style>
       </Layout>
