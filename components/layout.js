@@ -1,24 +1,22 @@
 import Head from 'next/head'
-import Link from 'next/link'
 
 export default function Layout({ children }) {
   return (
     <div className="container">
       <Head>
-        <title>Guess That Frontend Log</title>
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
-          content="Do you think you can guess all the logos within 30 seconds?"
+          content="Learn how to build a personal website using Next.js"
         />
         <meta
           property="og:image"
-          content="https://raw.githubusercontent.com/vishaag/guess-that-logo/master/public/twitter-card.png"
+          content={`https://og-image.now.sh/${encodeURI(
+            siteTitle
+          )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.zeit.co%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`}
         />
-        <meta name="twitter:image" content="https://raw.githubusercontent.com/vishaag/guess-that-logo/master/public/twitter-card.png"></meta>
-        <meta name="og:title" content="Guess That Frontend Logo" />
+        <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
-
       </Head>
 
       <header>
