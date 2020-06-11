@@ -13,14 +13,14 @@ export default function Layout({ children }) {
           Guess That Frontend Logo!
         </h1>
       </header>
-      <main className="paper border border-3 border-primary">
+      <main className="paper border border-3 border-primary padding-medium">
       {children}
       </main>
 
       <style jsx>{`
       .title {
         text-align: center;
-        font-size: 3em;
+        font-size: 2em;
       }
       `}</style>
     </div>

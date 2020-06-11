@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import useSWR from 'swr'
 import {useState} from 'react'
 import { Share } from 'react-twitter-widgets'
@@ -12,7 +11,6 @@ export default function Home() {
   const [start, setStart] = useState(false);
   const [index, setIndex] = useState(0);
   const [counter, setCounter] = useState(30);
-  const [endMessage, setEndMessage] = useState('');
   const [score, setScore] = useState(0);
   let timerClass = cn('bar striped success ', `w-${Math.floor(((counter)/30)*100)}`); 
   let timer;
@@ -58,10 +56,8 @@ export default function Home() {
     if (index < data.length && counter > 0) {
       return (
         <Layout>
-          <div className="row">
-            <div className="progress margin-bottom">
-              <div className={timerClass}></div>
-            </div>
+          <div className="progress margin-bottom">
+            <div className={timerClass}></div>
           </div>
           <div className="row flex-center">
               <img src={data[index].img} className="no-border"/>
@@ -72,7 +68,12 @@ export default function Home() {
             <li className="sm-12 md-5 lg-5 col" onClick = {(e) => handleClick(e, 2, index)}>{data[index].options[2]}</li>
             <li className="sm-12 md-5 lg-5 col" onClick = {(e) => handleClick(e, 3, index)}>{data[index].options[3]}</li>
           </ul>
+          <p>{index+1}/{data.length}</p>
           <style jsx>{`
+            p {
+              text-align: center;
+            }
+
             ul {
               padding: 0;
             }
@@ -90,8 +91,15 @@ export default function Home() {
               text-align: center;
               box-sizing: border-box;
               cursor: pointer;
-              margin: 1em 0 1em 0;
+              margin: 0.2em 0 0.2em 0;
             }
+            
+            @media (min-width:801px)  {
+              li {
+                margin: 1em 0 1em 0;
+              }
+            }
+
         `}</style>
         </Layout>
       )
@@ -99,7 +107,7 @@ export default function Home() {
       return (
         <Layout>
           <div className="row flex-center">
-            <h1>Score: {score}/{data.length}</h1>
+            <h2>Score: {score}/{data.length}</h2>
             <p className="col-12 col">Share on Twitter?</p>
             <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.length} in Guess That Frontend Logo with ${counter} seconds remaining! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
             <button className="btn-block" onClick={() => playAgain()}>Play Again!</button>
