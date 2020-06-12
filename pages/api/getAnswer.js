@@ -1,15 +1,33 @@
-import fs from 'fs'
-import path from 'path'
+import faunadb from 'faunadb'
+
+const secret = process.env.FAUNADB_SECRET
+
+const q = faunadb.query
+const client = new faunadb.Client({ secret })
 
 const getAnswer = (fileContents, questionId) => {
-  const answer = fileContents.find(object => object.id == questionId).answer;
+  const answer = fileContents.find(object => object.data.id == questionId).data.answer;
+  console.log(answer)
   return { "answer": answer };
 }
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   const { questionId } = req.query
-  const dataDirectory = path.join(process.cwd(), 'decks/data.json')
-  const fileContents = JSON.parse(fs.readFileSync(dataDirectory, 'utf8'))
-  const answer = getAnswer(fileContents['data'], questionId);
-  res.status(200).json(answer) 
+  try {
+    const dbs = await client.query(
+      q.Map(
+        q.Paginate(
+          q.Documents(
+            q.Collection("frontend")
+          )
+        ), 
+        ref => q.Get(ref)
+      )
+    )
+    console.log(dbs.data)
+    const answer = getAnswer(dbs.data, questionId);
+    res.status(200).json(answer)
+  } catch (e) {
+    res.status(500).json({ error: e.message })
+}
 }

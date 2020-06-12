@@ -61,13 +61,13 @@ export default function Home() {
             <div className={timerClass}></div>
           </div>
           <div className="row flex-center">
-              <img src={data[index].img} className="no-border"/>
+              <img src={data[index]["data"].img} className="no-border"/>
           </div>
           <ul className="row flex-edges child-borders child-shadows-hover">
-            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index].id)}>{data[index].options[0]}</li>
-            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index].id)}>{data[index].options[1]}</li>
-            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index].id)}>{data[index].options[2]}</li>
-            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index].id)}>{data[index].options[3]}</li>
+            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index]["data"].id)}>{data[index]["data"].options[0]}</li>
+            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index]["data"].id)}>{data[index]["data"].options[1]}</li>
+            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index]["data"].id)}>{data[index]["data"].options[2]}</li>
+            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index]["data"].id)}>{data[index]["data"].options[3]}</li>
           </ul>
           <p>{index+1}/{data.length}</p>
           <style jsx>{`
