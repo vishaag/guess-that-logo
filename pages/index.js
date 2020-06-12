@@ -23,11 +23,12 @@ export default function Home() {
     }
   }, [counter, start]);
 
-  const handleClick = async function (e,answerIndex, questionIndex) {
-    e.persist()
-    const res = await fetch(`api/getAnswer?answerIndex=${answerIndex}&questionIndex=${questionIndex}`)
-    const answer = await res.json()
-    if(answer == answerIndex) {
+  const handleClick = async function (e, questionId) {
+    e.persist();
+    const selectedAnswer = e.target.innerText;
+    const res = await fetch(`api/getAnswer?questionId=${questionId}`);
+    const answerObject = await res.json();
+    if (answerObject["answer"] == selectedAnswer) {
       setScore(score => score + 1)
       e.target.style.background = "green";
       e.target.style.color = "white";
@@ -63,10 +64,10 @@ export default function Home() {
               <img src={data[index].img} className="no-border"/>
           </div>
           <ul className="row flex-edges child-borders child-shadows-hover">
-            <li className="sm-12 md-5 lg-5 col" onClick = {(e) => handleClick(e, 0, index)}>{data[index].options[0]}</li>
-            <li className="sm-12 md-5 lg-5 col" onClick = {(e) => handleClick(e, 1, index)}>{data[index].options[1]}</li>
-            <li className="sm-12 md-5 lg-5 col" onClick = {(e) => handleClick(e, 2, index)}>{data[index].options[2]}</li>
-            <li className="sm-12 md-5 lg-5 col" onClick = {(e) => handleClick(e, 3, index)}>{data[index].options[3]}</li>
+            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index].id)}>{data[index].options[0]}</li>
+            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index].id)}>{data[index].options[1]}</li>
+            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index].id)}>{data[index].options[2]}</li>
+            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index].id)}>{data[index].options[3]}</li>
           </ul>
           <p>{index+1}/{data.length}</p>
           <style jsx>{`
@@ -111,6 +112,9 @@ export default function Home() {
             <p className="col-12 col padding-small">Share on Twitter?</p>
             {counter > 0 &&
               <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.length} in Guess That Frontend Logo with ${counter} seconds remaining! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
+            }
+            {counter == 1 &&
+              <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.length} in Guess That Frontend Logo with ${counter} second remaining! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
             }
             {counter == 0 &&
               <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.length} in Guess That Frontend Logo! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
