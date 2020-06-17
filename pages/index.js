@@ -1,13 +1,12 @@
-import useSWR from 'swr'
 import {useState} from 'react'
 import { Share } from 'react-twitter-widgets'
 import Layout from '../components/layout';
 import cn from 'classnames';
+import faunadb from 'faunadb'
 
-export default function Home() {
 
+export default function Home({data}) {
   const fetcher = (...args) => fetch(...args).then(res => res.json());
-  const { data, error } = useSWR('api/data', fetcher);
   const [start, setStart] = useState(false);
   const [index, setIndex] = useState(0);
   const [counter, setCounter] = useState(30);
@@ -16,19 +15,18 @@ export default function Home() {
   let timer;
 
   React.useEffect(() => {
-    if (start && counter > 0 && index < data.length) {
+    if (start && counter > 0 && index < data.quizObjects.length) {
       timer = setTimeout(() => {
         setCounter(counter - 1)
       }, 1000);
     }
   }, [counter, start]);
 
-  const handleClick = async function (e, questionId) {
+  const handleClick = async function (e) {
     e.persist();
     const selectedAnswer = e.target.innerText;
-    const res = await fetch(`api/getAnswer?questionId=${questionId}`);
-    const answerObject = await res.json();
-    if (answerObject["answer"] == selectedAnswer) {
+    const answer = data.quizObjects[index].answer;
+    if (answer == selectedAnswer) {
       setScore(score => score + 1)
       e.target.style.background = "green";
       e.target.style.color = "white";
@@ -40,7 +38,7 @@ export default function Home() {
       setIndex(index => index + 1)
       e.target.style.background = "white";
       e.target.style.color = "black";
-    }, 500);
+    }, 250);
   };
 
   const playAgain = function() {
@@ -50,26 +48,23 @@ export default function Home() {
     setIndex(0);
   }
 
-  if (error) return <div>failed to load</div>
-  if (!data) return <div>loading...</div>
-
   if (start) {
-    if (index < data.length && counter > 0) {
+    if (index < data.quizObjects.length && counter > 0) {
       return (
-        <Layout>
+        <Layout title="Guess That Frontend Logo">
           <div className="progress margin-bottom">
             <div className={timerClass}></div>
           </div>
           <div className="row flex-center">
-              <img src={data[index]["data"].img} className="no-border"/>
+            <img src={data.quizObjects[index].img} className="no-border"/>
           </div>
           <ul className="row flex-edges child-borders child-shadows-hover">
-            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index]["data"].id)}>{data[index]["data"].options[0]}</li>
-            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index]["data"].id)}>{data[index]["data"].options[1]}</li>
-            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index]["data"].id)}>{data[index]["data"].options[2]}</li>
-            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e, data[index]["data"].id)}>{data[index]["data"].options[3]}</li>
+            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e)}>{data.quizObjects[index].options[0]}</li>
+            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e)}>{data.quizObjects[index].options[1]}</li>
+            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e)}>{data.quizObjects[index].options[2]}</li>
+            <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e)}>{data.quizObjects[index].options[3]}</li>
           </ul>
-          <p>{index+1}/{data.length}</p>
+          <p>{index + 1}/{data.quizObjects.length}</p>
           <style jsx>{`
             p {
               text-align: center;
@@ -106,18 +101,18 @@ export default function Home() {
       )
     } else {
       return (
-        <Layout>
+        <Layout title="Guess That Frontend Logo">
           <div className="row flex-center">
-            <h2 className="padding-small margin-small">Score: {score}/{data.length}</h2>
+            <h2 className="padding-small margin-small">Score: {score}/{data.quizObjects.length}</h2>
             <p className="col-12 col padding-small">Share on Twitter?</p>
             {counter > 0 &&
-              <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.length} in Guess That Frontend Logo with ${counter} seconds remaining! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
+              <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.quizObjects.length} in Guess That Frontend Logo with ${counter} seconds remaining! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
             }
             {counter == 1 &&
-              <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.length} in Guess That Frontend Logo with ${counter} second remaining! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
+              <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.quizObjects.length} in Guess That Frontend Logo with ${counter} second remaining! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
             }
             {counter == 0 &&
-              <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.length} in Guess That Frontend Logo! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
+              <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.quizObjects.length} in Guess That Frontend Logo! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
             }
             <button className="btn-block" onClick={() => playAgain()}>Play Again!</button>
           </div>
@@ -136,7 +131,7 @@ export default function Home() {
     }
   } else {
     return(
-      <Layout>
+      <Layout title="Guess That Frontend Logo">
         <div className="row flex-center">
           <img src="/frontLogo.svg" className="no-border"></img>
           <p className="col-12 col"> Do you think you can guess all the frontend logos?</p>
@@ -153,5 +148,23 @@ export default function Home() {
         `}</style>
       </Layout>
     )
+  }
+}
+
+
+export async function getStaticProps() {
+
+  const secret = process.env.FAUNADB_SECRET
+  const q = faunadb.query
+  const client = new faunadb.Client({ secret })
+
+  const dbs = await client.query(
+    q.Get(q.Ref(q.Collection('public-decks'), '268584817066508812'))
+  )
+    
+  return {
+    props: {
+      data : dbs.data
+    },
   }
 }

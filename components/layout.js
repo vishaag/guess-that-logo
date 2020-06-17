@@ -1,10 +1,10 @@
 import Head from 'next/head'
 
-export default function Layout({ children }) {
+export default function Layout({ children, title }) {
   return (
     <div className="container">
       <Head>
-        <title>Guess That Frontend Logo</title>
+        <title>{title}</title>
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
@@ -21,7 +21,7 @@ export default function Layout({ children }) {
 
       <header>
         <h1 className="title">
-          Guess That Frontend Logo
+          {title}
         </h1>
       </header>
       <main className="paper border border-3 border-primary padding-medium">

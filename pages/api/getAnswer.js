@@ -6,8 +6,7 @@ const q = faunadb.query
 const client = new faunadb.Client({ secret })
 
 const getAnswer = (fileContents, questionId) => {
-  const answer = fileContents.find(object => object.data.id == questionId).data.answer;
-  console.log(answer)
+  const answer = fileContents[0].find(object => object.data.quizObjects.id == questionId).data.quizObjects.answer;
   return { "answer": answer };
 }
 
@@ -18,13 +17,13 @@ export default async function handler(req, res) {
       q.Map(
         q.Paginate(
           q.Documents(
-            q.Collection("frontend")
+            q.Collection("public-decks")
           )
         ), 
         ref => q.Get(ref)
       )
     )
-    console.log(dbs.data)
+    // console.log(dbs.data)
     const answer = getAnswer(dbs.data, questionId);
     res.status(200).json(answer)
   } catch (e) {
