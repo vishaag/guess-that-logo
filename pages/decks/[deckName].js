@@ -63,7 +63,7 @@ export default function Deck({ data }) {
     if (start) {
       if (index < data.quizObjects.length && counter > 0) {
         return (
-          <Layout title="Guess That Frontend Logo">
+          <Layout title={data.title}>
             <div className="progress margin-bottom">
               <div className={timerClass}></div>
             </div>
@@ -113,7 +113,7 @@ export default function Deck({ data }) {
         )
       } else {
         return (
-          <Layout title="Guess That Frontend Logo">
+          <Layout title={data.title}>
             <div className="row flex-center">
               <h2 className="padding-small margin-small">Score: {score}/{data.quizObjects.length}</h2>
               <p className="col-12 col padding-small">Share on Twitter?</p>
@@ -143,10 +143,10 @@ export default function Deck({ data }) {
       }
     } else {
       return (
-        <Layout title="Guess That Frontend Logo">
+        <Layout title={data.title}>
           <div className="row flex-center">
             <img src="/frontLogo.svg" className="no-border"></img>
-            <p className="col-12 col"> Do you think you can guess all the frontend logos?</p>
+            <p className="col-12 col"> {data.introduction}</p>
             <button className="btn-block" onClick={() => setStart(true)}>Start Game</button>
           </div>
           <style jsx>{`
