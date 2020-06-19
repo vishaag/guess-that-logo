@@ -6,13 +6,13 @@ const q = faunadb.query
 const client = new faunadb.Client({ secret })
 
 export default async function handler(req, res) {
-  const quizObjects = req.body;
+  const body = req.body;
   try {
     const dbs = await 
     client.query(
       q.Create(
         q.Collection('public-decks'),
-        { data: { quizObjects } },
+        { data: body },
       )
     )
     res.status(200).json(dbs)

@@ -175,12 +175,14 @@ export default function Deck({ data }) {
   }
 }
 
-const secret = process.env.FAUNADB_SECRET
-const q = faunadb.query
-const client = new faunadb.Client({ secret })
+
 
 
 export async function getStaticPaths() {
+  const secret = process.env.FAUNADB_SECRET
+  const q = faunadb.query
+  const client = new faunadb.Client({ secret })
+
   const dbs = await client.query(
     q.Map(q.Paginate(q.Documents(q.Collection("deck-names"))),
       ref => q.Get(ref)
@@ -200,17 +202,24 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
+
+  const secret = process.env.FAUNADB_SECRET
+  const q = faunadb.query
+  const client = new faunadb.Client({ secret })
+
   try {
     let dbs = await client.query(
       q.Get(q.Match(q.Index('public-decks-index'), params.deckName))
     )
     return {
+      unstable_revalidate: 1,
       props: {
         data: dbs.data
       },
     }
   } catch(error) {
     return {
+      unstable_revalidate: 1,
       props: {
         data: false
       },
