@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { flatMap } from 'lodash';
 
-export default function Dropzone({ index, handleFileUpload }) {
+export default function Dropzone({ index, handleFileUpload, img }) {
   const [loading, setLoading] = useState(false)
-  const [img, setImg] = useState('')
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     multiple: false,
@@ -21,8 +19,6 @@ export default function Dropzone({ index, handleFileUpload }) {
       const uploadedFile = await res.json()
       handleFileUpload(uploadedFile.secure_url, index)
       setLoading(false);
-      setImg(uploadedFile.secure_url)
-      console.log(uploadedFile.secure_url)
     }
   });
 
@@ -30,13 +26,11 @@ export default function Dropzone({ index, handleFileUpload }) {
     <>
     <section className="container">
       <div {...getRootProps({ className: 'dropzone' })} className="dropzone-div">
-        <input {...getInputProps()} />
+        <input type="file" required name="fileUpload" {...getInputProps()} />
 
-        {!img && <div>
-          {!loading && <p>Upload Image</p>}
-          {loading && <img src="/loader.svg" className="no-border loading"/>}
-        </div>}
-        {img && <img src={img} className="no-border"/>}
+        {!img && !loading && <p>Upload Image</p>}
+        {loading && <img src="/loader.svg" className="no-border loading"/>}
+        {img && !loading && <img src={img} className="no-border"/>}
       </div>
     </section>
     <style jsx>{`
@@ -45,6 +39,7 @@ export default function Dropzone({ index, handleFileUpload }) {
           justify-content: center;
           align-items: center;
       }
+
       p {
         text-align: center;
         height: 150px; 
@@ -54,12 +49,8 @@ export default function Dropzone({ index, handleFileUpload }) {
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
       }
-
-      .loading {
-        z-index: 1;
-      }
-
 
       img {
         height: 150px;

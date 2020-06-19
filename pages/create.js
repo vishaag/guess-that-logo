@@ -61,7 +61,6 @@ export default function Create() {
       ...settings,
       quizObjects: [...deck]
     }
-    console.log(obj)
     e.preventDefault();
     try {
       const res = await fetch(`api/createData`, {
@@ -71,9 +70,10 @@ export default function Create() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(obj)
-        });
-        setCreated(true)
-      } catch (e) {
+      });
+      const result= await res.json()
+      setCreated(true)
+    } catch (e) {
     }
   }
 
@@ -81,30 +81,26 @@ export default function Create() {
     let array = [...deck];
     array[index].img = url;
     setDeck(array);
-    console.log(deck)
   }
 
   if(!created) {
     return(
-    <>
     <Layout title="Create a New Deck">
       <form onSubmit={handleCreate}>
         <h4>Question / Answers</h4>
         {deck.map((object, index) => (
             <div key={index}>
-              <div className="row flex-center">
-                <div className="sm-2 md-2 col">
-                  <Dropzone index={index} handleFileUpload={handleFileUpload}/>
-                </div>
-                
-              </div>
-              
-            
+
             <div className="row flex-edges margin-none">
               <p className="margin-none">{index+1})</p>
               <button className="clear padding-small margin-none" onClick={() => removeObject(index)}>X</button>
             </div>
 
+
+            <div className="row">
+              <Dropzone index={index} handleFileUpload={handleFileUpload} img={deck[index].img}/>
+            </div>
+      
             <div className="row flex-spaces">
               <input className="sm-12 md-5 col padding-small background-success margin-small" placeholder="Correct Answer" required value={object.options[0]} onChange={(e) => handleInput(e, index, 0)}></input>
               <input className="sm-12 md-5 col padding-small background-warning margin-small" placeholder="Misleading Option" required value={object.options[1]}onChange={(e) => handleInput(e, index, 1)}></input>
@@ -198,12 +194,9 @@ export default function Create() {
 
   `}</style>
     </Layout>
-
-
-    </>
     )
 
-  } else {
+  }else {
     return (
       <Layout>
         Deck Created!
