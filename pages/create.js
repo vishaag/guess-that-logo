@@ -80,126 +80,111 @@ export default function Create() {
     return(
     <>
     <Layout title="Create a New Deck">
-        <form>
-      {deck.map((object, index) => (
-          <div key={object.img}>
-          <div className="row flex-edges margin-none">
-            <p className="margin-none">{index+1})</p>
-            {object.img && <img src={object.img} className="no-border"></img>}
-            <button className="clear padding-small margin-none" onClick={() => removeObject(index)}>X</button>
+      <form onSubmit={handleCreate}>
+        <h4>Question / Answers</h4>
+        {deck.map((object, index) => (
+            <div key={object.img}>
+            <div className="row flex-edges margin-none">
+              <p className="margin-none">{index+1})</p>
+              {object.img && <img src={object.img} className="no-border"></img>}
+              <button className="clear padding-small margin-none" onClick={() => removeObject(index)}>X</button>
+            </div>
+
+            <div className="row flex-spaces">
+              <input className="sm-12 md-5 col padding-small background-success margin-small" placeholder="Correct Answer" required value={object.options[0]} onChange={(e) => handleInput(e, index, 0)}></input>
+              <input className="sm-12 md-5 col padding-small background-warning margin-small" placeholder="Misleading Option" required value={object.options[1]}onChange={(e) => handleInput(e, index, 1)}></input>
+              <input className="sm-12 md-5 col padding-small background-warning margin-small" placeholder="Close but Wrong Option" required value={object.options[2]} onChange={(e) => handleInput(e, index, 2)}></input>
+              <input className="sm-12 md-5 col padding-small background-warning margin-small" placeholder="Surely Wrong Option" required value={object.options[3]} onChange={(e) => handleInput(e, index, 3)}></input>
+            </div>
           </div>
-          <div className="row flex-center">
-              {index}
-              <button onClick={() => {
-                setImageIndex(index)
-                console.log(imageIndex)
-                widget.open();
-              }} className="no-border"></button>
-          </div>
-          <div className="row flex-spaces">
-            <input className="sm-12 md-5 col padding-small background-success margin-small" placeholder="Correct Answer" required value={object.options[0]} onChange={(e) => handleInput(e, index, 0)}></input>
-            <input className="sm-12 md-5 col padding-small background-warning margin-small" placeholder="Misleading Option" required value={object.options[1]}onChange={(e) => handleInput(e, index, 1)}></input>
-            <input className="sm-12 md-5 col padding-small background-warning margin-small" placeholder="Close but Wrong Option" required value={object.options[2]} onChange={(e) => handleInput(e, index, 2)}></input>
-            <input className="sm-12 md-5 col padding-small background-warning margin-small" placeholder="Surely Wrong Option" required value={object.options[3]} onChange={(e) => handleInput(e, index, 3)}></input>
-          </div>
+        ))}
+
+        <div className="row flex-center">
+          <button type="button" className="paper-btn margin add-btn" onClick={() => addAnotherObject()}>+</button>
         </div>
-      ))}
-      <div className="row flex-center">
-        <button type="button" className="paper-btn margin add-btn" onClick={() => addAnotherObject()}>+</button>
-      </div>
-      </form> 
 
-
-      <style jsx>{`            
-        img {
-          height: 150px;
-        }
-        .add-btn {
-            padding: .6em 1em;
-            border-top-left-radius: 185px 160px;
-            border-top-right-radius: 200px 195px;
-            border-bottom-right-radius: 160px 195px;
-            border-bottom-left-radius: 185px 190px
-        }
-
-        p {
-          font-size: 1.2em;
-        }
-
-        .clear {
-          text-align: right;
-        }
-      `}</style>
-    </Layout>
-    <div className="container">
-      <div className="paper border border-3 border-primary padding-medium">
-        <form>
+        <div>
           <h4>First Page Settings</h4>
-
           <div className="row">
-                <label><b>Title</b></label>
-              <input name="title" className="col-12 col" value={settings.title} onChange={(e) => handleSettingsInput(e)}></input>
+            <label><b>Title</b></label>
+            <input name="title" required className="col-12 col fpsettings" value={settings.title} onChange={(e) => handleSettingsInput(e)}></input>
           </div>
 
           <div className="row flex-center">
-                <label><b>URL</b></label>
-                <div className="align-middle url-div">
-                <label>guess-that-logo.now.sh/</label>
-              </div> 
-                <div className="sm-10 md-7 col url-input-div align-middle">
-                <input name="deckName" value={settings.deckName} onChange={(e) => handleSettingsInput(e)}></input>
-              </div>             
+            <label><b>URL</b></label>
+            <div className="align-middle url-div">
+              <label>guess-that-logo.now.sh/</label>
+            </div>
+                <div className="sm-10 md-7 col url-input-div align-middle fpsettings">
+              <input name="deckName" required value={settings.deckName} onChange={(e) => handleSettingsInput(e)}></input>
+            </div>
           </div>
 
           <div className="row flex-center">
-                <label><b>Introduction</b></label>
-            <textarea name="introduction" className="col-12 col" value={settings.introduction} onChange={(e) => handleSettingsInput(e)}></textarea>
+            <label><b>Introduction</b></label>
+                <textarea name="introduction" required className="col-12 col fpsettings" value={settings.introduction} onChange={(e) => handleSettingsInput(e)}></textarea>
           </div>
+          
+          {(deck.length > 0) &&
+            <div className="row flex-center">
+              <button type="submit">Create Deck</button>
+            </div>
+          }
+        </div>
+      </form>
+      <style jsx>{`
+      img {
+        height: 250px;
+      }
+
+      .fpsettings input {
+        margin: 0em;
+        width: 100%;
+        padding: 0.5em;
+      }
+
+      label {
+        width: 100%;
+        text-align: center;
+      }
+
+      .url-div {
+        padding: 0;
+        margin: 0;
+      }
+
+      .url-input-div{
+        margin: 0;
+        padding: 0 0em 0em 0.2em;
+      }
+
+      h4{
+        text-align: center;
+      }
+
+      img {
+        height: 150px;
+      }
+      .add-btn {
+          padding: .6em 1em;
+          border-top-left-radius: 185px 160px;
+          border-top-right-radius: 200px 195px;
+          border-bottom-right-radius: 160px 195px;
+          border-bottom-left-radius: 185px 190px
+      }
+
+      p {
+        font-size: 1.2em;
+      }
+
+      .clear {
+        text-align: right;
+      }
+
+  `}</style>
+    </Layout>
 
 
-
-
-
-        {(deck.length > 0) &&
-          <div className="row flex-center">
-          <button type="submit" onClick={handleCreate}>Create Deck</button>
-          </div>
-        }
-        <style jsx>{`
-        img {
-          height: 250px;
-        }
-
-        input {
-          margin: 0em;
-          width: 100%;
-          padding: 0.5em;
-        }
-
-        label {
-          width: 100%;
-          text-align: center;
-        }
-
-        .url-div {
-          padding: 0;
-          margin: 0;
-        }
-
-        .url-input-div{
-          margin: 0;
-          padding: 0 0em 0em 0.2em;
-        }
-
-        h4{
-          text-align: center;
-        }
-
-        `}</style>
-
-        </form>
-      </div>
-    </div>
     </>
     )
 
