@@ -118,13 +118,13 @@ export default function Deck({ data }) {
               <h2 className="padding-small margin-small">Score: {score}/{data.quizObjects.length}</h2>
               <p className="col-12 col padding-small">Share on Twitter?</p>
               {counter > 0 &&
-                <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.quizObjects.length} in Guess That Frontend Logo with ${counter} seconds remaining! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
+                <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.quizObjects.length} in ${data.title} with ${counter} seconds remaining! Play now to test your Logo Trivia knowledge!`, size: "large" }} />
               }
               {counter == 1 &&
-                <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.quizObjects.length} in Guess That Frontend Logo with ${counter} second remaining! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
+                <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.quizObjects.length} in ${data.title} with ${counter} second remaining! Play now to test your Logo Trivia knowledge!`, size: "large" }} />
               }
               {counter == 0 &&
-                <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.quizObjects.length} in Guess That Frontend Logo! Play now to test your Frontend Trivia knowledge!`, size: "large" }} />
+                <Share url="https://guess-that-logo.now.sh/" options={{ text: `I scored ${score}/${data.quizObjects.length} in ${data.title}! Play now to test your Logo Trivia knowledge!`, size: "large" }} />
               }
               <button className="btn-block" onClick={() => playAgain()}>Play Again!</button>
             </div>
@@ -144,6 +144,7 @@ export default function Deck({ data }) {
     } else {
       return (
         <Layout title={data.title}>
+          <h4>{data.title}</h4>
           <div className="row flex-center">
             <img src="/frontLogo.svg" className="no-border"></img>
             <p className="col-12 col"> {data.introduction}</p>
@@ -156,6 +157,11 @@ export default function Deck({ data }) {
           p {
             text-align: center;
             font-size: 1.5em;
+          }
+
+          h4 {
+            text-align: center;
+            margin: 0 0 1em 0;
           }
         `}</style>
         </Layout>

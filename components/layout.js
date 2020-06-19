@@ -53,6 +53,7 @@ export default function Layout({ children, title }) {
 
         .nav-buttons-container button {
          background: white;
+         z-index: -1;
         }
       `}</style>
     </>
