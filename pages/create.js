@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import Layout from '../components/layout';
 import kebabCase from 'lodash/kebabCase';
+import Dropzone from '../components/dropzone'
 
 export default function Create() {
   const [deck, setDeck] = useState([
@@ -76,6 +77,13 @@ export default function Create() {
     }
   }
 
+  const handleFileUpload = (url, index) => {
+    let array = [...deck];
+    array[index].img = url;
+    setDeck(array);
+    console.log(deck)
+  }
+
   if(!created) {
     return(
     <>
@@ -83,10 +91,17 @@ export default function Create() {
       <form onSubmit={handleCreate}>
         <h4>Question / Answers</h4>
         {deck.map((object, index) => (
-            <div key={object.img}>
+            <div key={index}>
+              <div className="row flex-center">
+                <div className="sm-2 md-2 col">
+                  <Dropzone index={index} handleFileUpload={handleFileUpload}/>
+                </div>
+                
+              </div>
+              
+            
             <div className="row flex-edges margin-none">
               <p className="margin-none">{index+1})</p>
-              {object.img && <img src={object.img} className="no-border"></img>}
               <button className="clear padding-small margin-none" onClick={() => removeObject(index)}>X</button>
             </div>
 
@@ -124,7 +139,7 @@ export default function Create() {
             <label><b>Introduction</b></label>
                 <textarea name="introduction" required className="col-12 col fpsettings" value={settings.introduction} onChange={(e) => handleSettingsInput(e)}></textarea>
           </div>
-          
+
           {(deck.length > 0) &&
             <div className="row flex-center">
               <button type="submit">Create Deck</button>
