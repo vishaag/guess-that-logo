@@ -13,8 +13,9 @@ return (
           <div className="sm-12 md-6 lg-4 col">
             <div className="card custom-card">
               <div className="card-body">
-                <h4 className="card-title">Guess that Frontend Logo</h4>
-            <Link href="/decks/[deckName]" as="/decks/frontend"><button className="btn-block">Play</button></Link>
+                <img src="/frontend.svg"></img>
+                <h4 className="card-title">Frontend Tech Logos</h4>
+            <Link href="/decks/[deckName]" as="/decks/frontend-tech"><button className="btn-block">Play</button></Link>
                 </div>
             </div>
           </div>
@@ -22,8 +23,9 @@ return (
           <div className="sm-12 md-6 lg-4 col">
             <div className="card custom-card">
               <div className="card-body">
-                <h4 className="card-title">Guess that Legacy Technology</h4>
-                <Link href="/decks/[deckName]" as="/decks/legacy-technology"><button className="btn-block">Play</button></Link>
+                <img src="/backend.svg"></img>
+                <h4 className="card-title">Backend Tech Logos</h4>
+                <Link href="/decks/[deckName]" as="/decks/backend-tech"><button className="btn-block">Play</button></Link>
               </div>
             </div>
           </div>
@@ -31,8 +33,10 @@ return (
           <div className="sm-12 md-6 lg-4 col">
             <div className="card custom-card">
               <div className="card-body">
-                <h4 className="card-title">Guess that Beverage Logo</h4>
-                <Link href="/decks/[deckName]" as="/decks/beverages"><button className="btn-block">Play</button></Link>
+                <img src="/jamsatck-tech.svg"></img>
+                <h4 className="card-title">Jamstack Tech Logos</h4>
+                <Link href="/decks/[deckName]" as="/decks/jamstack-tech">
+                <button className="btn-block">Play</button></Link>
               </div>
             </div>
           </div>
