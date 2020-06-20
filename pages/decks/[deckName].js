@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Share } from 'react-twitter-widgets'
 import Layout from '../../components/layout';
 import cn from 'classnames';
 import faunadb from 'faunadb'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { shuffle } from 'lodash'
 
 export default function Deck({ data }) {
   const router = useRouter()
@@ -12,10 +13,11 @@ export default function Deck({ data }) {
   const [index, setIndex] = useState(0);
   const [counter, setCounter] = useState(30);
   const [score, setScore] = useState(0);
+  const [shuffledOptions, setshuffledOptions] = useState(shuffle([0, 1, 2, 3]));
   let timerClass = cn('bar striped success ', `w-${Math.floor(((counter) / 30) * 100)}`);
   let timer;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (start && counter > 0 && index < data.quizObjects.length) {
       timer = setTimeout(() => {
         setCounter(counter - 1)
@@ -44,6 +46,7 @@ export default function Deck({ data }) {
 
   const playAgain = function () {
     clearTimeout(timer);
+    setshuffledOptions(shuffle([0, 1, 2, 3]))
     setScore(0)
     setCounter(30);
     setIndex(0);
@@ -71,10 +74,10 @@ export default function Deck({ data }) {
               <img src={data.quizObjects[index].img} className="no-border" />
             </div>
             <ul className="row flex-edges child-borders child-shadows-hover">
-              <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e)}>{data.quizObjects[index].options[0]}</li>
-              <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e)}>{data.quizObjects[index].options[1]}</li>
-              <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e)}>{data.quizObjects[index].options[2]}</li>
-              <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e)}>{data.quizObjects[index].options[3]}</li>
+              <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e)}>{data.quizObjects[index].options[shuffledOptions[0]]}</li>
+              <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e)}>{data.quizObjects[index].options[shuffledOptions[1]]}</li>
+              <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e)}>{data.quizObjects[index].options[shuffledOptions[2]]}</li>
+              <li className="sm-12 md-5 lg-5 col" onClick={(e) => handleClick(e)}>{data.quizObjects[index].options[shuffledOptions[3]]}</li>
             </ul>
             <p>{index + 1}/{data.quizObjects.length}</p>
             <style jsx>{`
