@@ -1,9 +1,12 @@
 import Link from 'next/link'
 import Layout from '../components/layout'
+import faunadb from 'faunadb'
 
-export default function Home() {
+export default function Home({ data }) {
 return (
+  <>
   <Layout title="Guess That Logo">
+        {console.log(data)}
         <div className="row">
 
           <div className="sm-12 col">
@@ -44,6 +47,30 @@ return (
         </div>
     
       
+  </Layout>
+  <div className="container">
+    <div className="paper border border-3 border-primary padding-medium">
+      <header>
+        <h3>All Decks</h3>
+      </header>
+      <div className="row">
+      {data.map(deck => {
+        return(
+          <div className="sm-12 md-6 lg-4 col">
+            <div className="card custom-card">
+              <div className="card-body">
+                <h4 className="card-title">{deck.title}</h4>
+                <Link href="/decks/[deckName]" as={`/decks/${deck.url}`}>
+                  <button className="btn-block">Play</button></Link>
+              </div>
+            </div>
+          </div>
+        )
+      })}
+      </div>
+
+    </div>
+  </div>
     <style jsx>{`
 
       .custom-card {
@@ -55,8 +82,42 @@ return (
         text-align: center;
       }
 
-      `}</style>
-  </Layout>
+    `}</style>
+  </>
 )
 }
 
+export async function getStaticProps() {
+
+  const secret = process.env.FAUNADB_SECRET
+  const q = faunadb.query
+  const client = new faunadb.Client({ secret })
+
+  try {
+    let dbs = await client.query(
+      q.Map(
+        q.Paginate(q.Documents(q.Collection("public-decks"))),
+        q.Lambda(x => q.Get(x))
+      )
+    )
+    
+    const decknames = dbs.data.map((deck) => {
+      return {
+        url: deck.data.deckName,
+        title: deck.data.title
+      }
+    })
+    return {
+      unstable_revalidate: 1,
+      props: {
+        data: decknames
+      },
+    }
+  } catch (error) {
+    return {
+      props: {
+        data: {}
+      },
+    }
+  }
+}
