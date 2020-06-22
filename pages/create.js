@@ -3,6 +3,7 @@ import Layout from '../components/layout';
 import kebabCase from 'lodash/kebabCase';
 import Dropzone from '../components/dropzone'
 import Router from 'next/router'
+import { debounce } from 'lodash'
 
 export default function Create() {
   const [deck, setDeck] = useState([
@@ -12,12 +13,14 @@ export default function Create() {
       answer: ''
     }
   ]);
-  const [created, setCreated] = useState(false);
   const [settings, setSettings] = useState({
     deckName: '',
     introduction: '',
     title: ''
   })
+
+  const [urlLoading, setUrlLoading] = useState(false);
+  const [urlState, setUrlState] = useState();
 
   const addAnotherObject = () => {
     if(deck.length < 20) {
@@ -47,35 +50,62 @@ export default function Create() {
     setDeck(array);
   }
 
+  const checkIfDeckExists = async (deckName) => {
+    if(deckName) {
+      try {
+        setUrlLoading(true)
+        await fetch(`api/checkIfDeckExists?deckName=${deckName}`)
+          .then((response) => response.json())
+          .then((responseData) => {
+            console.log(responseData)
+            setUrlLoading(false)
+            if (responseData == true) {
+              setUrlState('not-ok')
+            } else {
+              setUrlState('ok')
+            }
+          })
+      } catch (e) {
+        setUrlLoading(false)
+      }
+    } else {
+      setUrlState('')
+    }
+  }
+
   const handleSettingsInput = (e) => {
     const property = e.target.getAttribute("name");
     let newSettingsState = { ...settings }
     newSettingsState[property] = e.target.value;
-    if(property=='title') {
-      newSettingsState['deckName'] = kebabCase(e.target.value);
+    if (property == 'title' || property == 'deckName') {
+      const deckName = kebabCase(e.target.value);
+      newSettingsState['deckName'] = deckName;
+      checkIfDeckExists(deckName)
     }
     setSettings(newSettingsState);
   }
 
   const  handleCreate = async (e) => {
-    let obj = {
-      ...settings,
-      quizObjects: [...deck]
-    }
     e.preventDefault();
-    try {
-      await fetch(`api/createData`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(obj)
-      })
-      .then((res) => {
-        if (res.ok) Router.push(`/decks/${obj.deckName}`)
-      })
-    } catch (e) {
+    if (urlState == 'ok') {
+      let obj = {
+        ...settings,
+        quizObjects: [...deck]
+      }
+      try {
+        await fetch(`api/createData`, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(obj)
+        })
+          .then((res) => {
+            if (res.ok) Router.push(`/decks/${obj.deckName}`)
+          })
+      } catch (e) {
+      }
     }
   }
 
@@ -124,17 +154,28 @@ export default function Create() {
 
         <div className="row flex-center">
           <label><b>URL</b></label>
-          <div className="align-middle url-div">
+          <div className="sm-3 align-middle url-div">
             <label>guess-that-logo.now.sh/</label>
           </div>
-              <div className="sm-10 md-7 col url-input-div align-middle fpsettings">
+          <div className="sm-8 col url-input-div align-middle fpsettings">
             <input name="deckName" required value={settings.deckName} onChange={(e) => handleSettingsInput(e)}></input>
           </div>
+          <div className="row sm-1 col align-middle flex-center margin-none status">
+              {urlLoading && <img className="loader-ring no-border margin-none" src="/loader-ring.svg"/>}
+              {!urlLoading && urlState == 'ok' && `✅`}
+              {!urlLoading && urlState == 'not-ok' && `😲`}
+          </div>
         </div>
+        {urlState == 'not-ok' &&
+          <div className="row flex-center">
+            <div className="alert alert-danger url-exists-alert">URL Already Exists!</div>
+          </div>
+        }
+
 
         <div className="row flex-center">
           <label><b>Introduction</b></label>
-              <textarea name="introduction" required className="col-12 col fpsettings" value={settings.introduction} onChange={(e) => handleSettingsInput(e)}></textarea>
+              <textarea name="introduction" placeholder="Can you guess all the logos?"required className="col-12 col fpsettings" value={settings.introduction} onChange={(e) => handleSettingsInput(e)}></textarea>
         </div>
 
         {(deck.length > 0) &&
@@ -163,6 +204,7 @@ export default function Create() {
     .url-div {
       padding: 0;
       margin: 0;
+      text-align: right;
     }
 
     .url-input-div{
@@ -191,6 +233,21 @@ export default function Create() {
 
     .clear {
       text-align: right;
+    }
+
+    .loader-ring {
+      height: 25px;
+      width: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .url-exists-alert {
+      text-align: center;
+    }
+
+    .status {
+      padding: 0;
     }
 
 `}</style>
