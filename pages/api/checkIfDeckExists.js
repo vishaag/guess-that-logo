@@ -11,7 +11,6 @@ export default async function handler(req, res) {
     let dbs = await client.query(
       q.Exists(q.Match(q.Index('public-decks-index'), query.deckName))
     )
-    console.log(dbs)
     if(dbs) {
       res.status(200).json(true)
     } else {

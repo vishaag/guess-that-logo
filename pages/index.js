@@ -6,7 +6,6 @@ export default function Home({ data }) {
 return (
   <>
   <Layout title="Guess That Logo">
-        {console.log(data)}
         <div className="row">
 
           <div className="sm-12 col">
@@ -17,7 +16,10 @@ return (
             <div className="card custom-card">
               <div className="card-body">
                 <img src="/frontend.svg"></img>
-                <h4 className="card-title">Frontend Tech Logos</h4>
+
+              <h4 className="card-title">Frontend Tech Logos</h4>
+              <h5 class="card-subtitle">by <a href="https://twitter.com/@vishaag" target="_blank" >vishaag</a></h5>
+
             <Link href="/decks/[deckName]" as="/decks/frontend-tech"><button className="btn-block">Play</button></Link>
                 </div>
             </div>
@@ -28,6 +30,7 @@ return (
               <div className="card-body">
                 <img src="/backend.svg"></img>
                 <h4 className="card-title">Backend Tech Logos</h4>
+              <h5 class="card-subtitle">by <a href="https://twitter.com/@vishaag" target="_blank" >vishaag</a></h5>
                 <Link href="/decks/[deckName]" as="/decks/backend-tech"><button className="btn-block">Play</button></Link>
               </div>
             </div>
@@ -38,6 +41,7 @@ return (
               <div className="card-body">
                 <img src="/jamsatck-tech.svg"></img>
                 <h4 className="card-title">Jamstack Tech Logos</h4>
+              <h5 class="card-subtitle">by <a href="https://twitter.com/@vishaag" target="_blank" >vishaag</a></h5>
                 <Link href="/decks/[deckName]" as="/decks/jamstack-tech">
                 <button className="btn-block">Play</button></Link>
               </div>
@@ -54,12 +58,16 @@ return (
         <h3>All Decks</h3>
       </header>
       <div className="row">
-      {data.map(deck => {
+      {data.map((deck, index) => {
         return(
-          <div className="sm-12 md-6 lg-4 col">
+          <div className="sm-12 md-6 lg-4 col" key={index}>
             <div className="card custom-card">
               <div className="card-body">
                 <h4 className="card-title">{deck.title}</h4>
+                {deck.twitter && <h5 className="card-subtitle">by <a target="_blank" href={`https://twitter.com/${deck.twitter}`}>{deck.author}</a></h5>}
+
+                {!deck.twitter && <h5 className="card-subtitle" >by {deck.author} </h5>}
+                
                 <Link href="/decks/[deckName]" as={`/decks/${deck.url}`}>
                   <button className="btn-block">Play</button></Link>
               </div>
@@ -104,7 +112,9 @@ export async function getStaticProps() {
     const decknames = dbs.data.map((deck) => {
       return {
         url: deck.data.deckName,
-        title: deck.data.title
+        title: deck.data.title,
+        author: deck.data.author,
+        twitter: deck.data.twitter
       }
     })
     return {

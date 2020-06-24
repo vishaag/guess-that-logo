@@ -16,7 +16,9 @@ export default function Create() {
   const [settings, setSettings] = useState({
     deckName: '',
     introduction: '',
-    title: ''
+    title: '',
+    author: '',
+    twitter: ''
   })
 
   const [urlLoading, setUrlLoading] = useState(false);
@@ -176,6 +178,16 @@ export default function Create() {
         <div className="row flex-center">
           <label><b>Introduction</b></label>
               <textarea name="introduction" placeholder="Can you guess all the logos?"required className="col-12 col fpsettings" value={settings.introduction} onChange={(e) => handleSettingsInput(e)}></textarea>
+        </div>
+
+        <div className="row">
+          <label><b>Your Name</b></label>
+          <input name="author" required className="col-12 col fpsettings" value={settings.author} onChange={(e) => handleSettingsInput(e)}></input>
+        </div>
+
+        <div className="row">
+          <label><b>Twitter Handle (optional)</b></label>
+          <input name="twitter" placeholder="@twitterHandle" className="col-12 col fpsettings" value={settings.twitter} onChange={(e) => handleSettingsInput(e)}></input>
         </div>
 
         {(deck.length > 0) &&

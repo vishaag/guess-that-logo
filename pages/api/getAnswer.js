@@ -23,7 +23,6 @@ export default async function handler(req, res) {
         ref => q.Get(ref)
       )
     )
-    // console.log(dbs.data)
     const answer = getAnswer(dbs.data, questionId);
     res.status(200).json(answer)
   } catch (e) {
