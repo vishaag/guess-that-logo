@@ -13,13 +13,11 @@ export default function Layout({ children, title }) {
       />
       <meta
         property="og:image"
-        content="https://raw.githubusercontent.com/vishaag/guess-that-logo/master/public/twitter-card.png"
+        content="/social-card.png"
       />
-      <meta name="twitter:image" content="https://raw.githubusercontent.com/vishaag/guess-that-logo/master/public/twitter-card.png"></meta>
+        <meta name="twitter:image" content="/social-card.png"></meta>
       <meta name="og:title" content="Guess That Frontend Logo" />
       <meta name="twitter:card" content="summary_large_image" />
-      <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>  
-
     </Head>
     <header>
       <div className="row flex-edges margin-small nav-buttons-container">
