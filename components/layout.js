@@ -11,13 +11,11 @@ export default function Layout({ children, title }) {
         name="description"
         content="Do you think you can guess all the logos within 30 seconds?"
       />
-      <meta
-        property="og:image"
-        content="https://raw.githubusercontent.com/vishaag/guess-that-logo/master/public/social-card.png"
-      />
-        <meta name="twitter:image" content="https://raw.githubusercontent.com/vishaag/guess-that-logo/master/public/social-card.png"></meta>
       <meta name="og:title" content="Guess That Logo!" />
       <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="Guess That Logo!" />
+      <meta name="twitter:description" content="Do you think you can guess all the logos within 30 seconds?" />
+      <meta name="twitter:image" content="https://raw.githubusercontent.com/vishaag/guess-that-logo/master/public/social-card.png" />
     </Head>
     <header>
       <div className="row flex-edges margin-small nav-buttons-container">
