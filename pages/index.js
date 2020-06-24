@@ -79,6 +79,9 @@ return (
 
     </div>
   </div>
+  <footer>
+      <p>Hosted on <a href="https://vercel.com" target="_blank" >▲Vercel</a> | by <a href="https://twitter.com/vishaag" target="_blank" >@vishaag</a> | <a href="https://github.com/vishaag/guess-that-logo" target="_blank" >Github</a></p>
+  </footer>
     <style jsx>{`
 
       .custom-card {
@@ -88,6 +91,14 @@ return (
       h3{
         margin: 0;
         text-align: center;
+      }
+
+      footer {
+        text-align: center;
+      }
+
+      p {
+        font-size: 1.2em;
       }
 
     `}</style>

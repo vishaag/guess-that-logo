@@ -118,6 +118,7 @@ export default function Create() {
   }
 
   return(
+  <>
   <Layout title="Create a New Deck">
     <form onSubmit={handleCreate}>
       <h4>Question / Answers</h4>
@@ -197,73 +198,80 @@ export default function Create() {
         }
       </div>
     </form>
-    <style jsx>{`
-    img {
-      height: 250px;
-    }
-
-    .fpsettings input {
-      margin: 0em;
-      width: 100%;
-      padding: 0.5em;
-    }
-
-    label {
-      width: 100%;
-      text-align: center;
-    }
-
-    .url-div {
-      padding: 0;
-      margin: 0;
-      text-align: right;
-    }
-
-    .url-input-div{
-      margin: 0;
-      padding: 0 0em 0em 0.2em;
-    }
-
-    h4{
-      text-align: center;
-    }
-
-    img {
-      height: 150px;
-    }
-    .add-btn {
-        padding: .6em 1em;
-        border-top-left-radius: 185px 160px;
-        border-top-right-radius: 200px 195px;
-        border-bottom-right-radius: 160px 195px;
-        border-bottom-left-radius: 185px 190px
-    }
-
-    p {
-      font-size: 1.2em;
-    }
-
-    .clear {
-      text-align: right;
-    }
-
-    .loader-ring {
-      height: 25px;
-      width: 25px;
-      margin: 0;
-      padding: 0;
-    }
-
-    .url-exists-alert {
-      text-align: center;
-    }
-
-    .status {
-      padding: 0;
-    }
-
-`}</style>
   </Layout>
+  <footer>
+    <p>Hosted on <a href="https://vercel.com" target="_blank" >▲Vercel</a> | by <a href="https://twitter.com/vishaag" target="_blank" >@vishaag</a> | <a href="https://github.com/vishaag/guess-that-logo" target="_blank" >Github</a></p>
+  </footer>
+    <style jsx>{`
+      img {
+        height: 250px;
+      }
+
+      .fpsettings input {
+        margin: 0em;
+        width: 100%;
+        padding: 0.5em;
+      }
+
+      label {
+        width: 100%;
+        text-align: center;
+      }
+
+      .url-div {
+        padding: 0;
+        margin: 0;
+        text-align: right;
+      }
+
+      .url-input-div{
+        margin: 0;
+        padding: 0 0em 0em 0.2em;
+      }
+
+      h4{
+        text-align: center;
+      }
+
+      img {
+        height: 150px;
+      }
+      .add-btn {
+          padding: .6em 1em;
+          border-top-left-radius: 185px 160px;
+          border-top-right-radius: 200px 195px;
+          border-bottom-right-radius: 160px 195px;
+          border-bottom-left-radius: 185px 190px
+      }
+
+      p {
+        font-size: 1.2em;
+      }
+
+      .clear {
+        text-align: right;
+      }
+
+      .loader-ring {
+        height: 25px;
+        width: 25px;
+        margin: 0;
+        padding: 0;
+      }
+
+      .url-exists-alert {
+        text-align: center;
+      }
+
+      .status {
+        padding: 0;
+      }
+
+      footer {
+        text-align: center;
+      }
+  `}</style>
+  </>
   )
 
 }
