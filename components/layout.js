@@ -13,10 +13,10 @@ export default function Layout({ children, title }) {
       />
       <meta
         property="og:image"
-        content="/social-card.png"
+        content="https://raw.githubusercontent.com/vishaag/guess-that-logo/master/public/social-card.png"
       />
-        <meta name="twitter:image" content="/social-card.png"></meta>
-      <meta name="og:title" content="Guess That Frontend Logo" />
+        <meta name="twitter:image" content="https://raw.githubusercontent.com/vishaag/guess-that-logo/master/public/social-card.png"></meta>
+      <meta name="og:title" content="Guess That Logo!" />
       <meta name="twitter:card" content="summary_large_image" />
     </Head>
     <header>
